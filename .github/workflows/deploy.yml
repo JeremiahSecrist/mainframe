@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  tailscale_connect:
+  deploy:
     runs-on: ubuntu-latest
     
     steps:
