@@ -51,7 +51,7 @@ jobs:
         env:
           MACHINE: ${{secrets.HOST}}
         run: |
-          MACHINE_IP="$(tailscale ip -6 $MACHINE)"
+          MACHINE_IP="$(tailscale ip -4 jarvis)"
           ssh -i ~/.ssh/key "${{secrets.USERNAME}}@$MACHINE_IP" whoami
 
 
