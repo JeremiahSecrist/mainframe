@@ -1,0 +1,20 @@
+name: CD
+
+on:
+  workflow_dispatch:
+
+jobs:
+  tailscale_connect:
+    runs-on: ubuntu-latest
+    
+    steps:
+       name: Setup Tailscale
+      # or use main branch to go on the bleeding edge
+      uses: MadeByThePinsHub/tailscale-action-labels@v0.1
+      with:
+        # secret name may varies on your org
+        authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+        # the defaults tag goes here, plus some addons.
+        labels: tag:gh-actions
+        # Going to unstable is risky, beware!
+        version: "1.22.0"
