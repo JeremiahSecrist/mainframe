@@ -40,6 +40,8 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
+          # fingerprint: ${{ secrets.fingerprint }}
+          password: ${{ secrets.PASS}}          
+          # key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: whoami
