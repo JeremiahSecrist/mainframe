@@ -43,23 +43,24 @@ jobs:
           version: "1.21.120"
           
       - name: check connection
-        run: echo $(tailscale ip -4 jarvis)
+        run: echo $(tailscale ip -4 jarvis) && echo $(tailscale ip -6 jarvis)
           
           
       
-      # - name: Add SSH key
-      #   id: ssh
-      #   env:
-      #     SSH_KEY: ${{ secrets.SSH_KEY }}
-      #   run: |
-      #     mkdir -p ~/.ssh
-      #     ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
-      #     printf "%s" "$SSH_KEY" > ~/.ssh/key
-      #     chmod 600 ~/.ssh/key
+      - name: Add SSH key
+        id: ssh
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          MACHINE_IP=$(tailscale ip -4 jarvis)
+          ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
+          printf "%s" "$SSH_KEY" > ~/.ssh/key
+          chmod 600 ~/.ssh/key
 
-      # - name: test ssh connections
-      #   id: deploy
-      #   run: |
-      #     ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
+      - name: test ssh connections
+        id: deploy
+        run: |
+          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
 
 
