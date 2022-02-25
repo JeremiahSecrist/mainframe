@@ -28,9 +28,9 @@ jobs:
           labels: tag:gh-actions
           # Going to unstable is risky, beware!
           version: "1.21.120"
-          
+      
       - name: check connection
-        run: $(tailscale ip -4 ${{ secrets.HOST }})) && echo $(tailscale ip -6 ${{ secrets.HOST }}))
+        run: tailscale ip -4 ${{ secrets.HOST }} && tailscale ip -6 ${{ secrets.HOST }}
           
       - name: Add SSH key
         id: ssh
