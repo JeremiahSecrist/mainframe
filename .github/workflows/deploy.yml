@@ -33,7 +33,7 @@ jobs:
           # version: "1.22.0"
           
       - name: Update Tailscale Tags
-        run: sudo tailscale up --advertise-tags=${{ secrets.TAG }}
+        run: sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)"
       
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
