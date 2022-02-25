@@ -25,7 +25,7 @@ jobs:
           # secret name may varies on your org
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
           # the defaults tag goes here, plus some addons.
-          labels: tag:gh-actions
+          labels: ${{ secrets.TAG }}
           # Going to unstable is risky, beware!
           version: "1.21.120"
       
