@@ -34,8 +34,8 @@ jobs:
           
       - name: Update Tailscale Tags
         run: | 
-          sudo apt-get update
-          sudo apt-get install tailscale -y
+          sudo apt update
+          sudo apt install tailscale -y
           sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)"
           echo $(tailscale ip -4 jarvis)
           
