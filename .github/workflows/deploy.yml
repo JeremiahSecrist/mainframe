@@ -1,4 +1,4 @@
-name: CD
+name: Deployment
 
 on:
   workflow_dispatch:
@@ -18,19 +18,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # - name: Install libnotify
-      #   run: sudo apt-get install libnotify-bin
-
-      # - name: Setup Tailscale
-      #   # or use main branch to go on the bleeding edge
-      #   uses: tailscale/github-action@v1
-      #   with:
-      #     # secret name may varies on your org
-      #     authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-      #     # # the defaults tag goes here, plus some addons.
-      #     # labels: tag:gh-actions
-      #     # # Going to unstable is risky, beware!
-          # version: "1.22.0"
       - name: Setup Wireguard VPN through Tailscale
         # or use main branch to go on the bleeding edge
         uses: MadeByThePinsHub/tailscale-action-labels@v0.1.0
@@ -45,8 +32,6 @@ jobs:
       - name: check connection
         run: $(tailscale ip -4 ${{ secrets.HOST }})) && echo $(tailscale ip -6 ${{ secrets.HOST }}))
           
-          
-      
       - name: Add SSH key
         id: ssh
         env:
@@ -58,7 +43,7 @@ jobs:
           printf "%s" "$SSH_KEY" > ~/.ssh/key
           chmod 600 ~/.ssh/key
 
-      - name: test ssh connections
+      - name: Deploy code to server
         id: deploy
         run: |
           MACHINE_IP=$(tailscale ip -6)
