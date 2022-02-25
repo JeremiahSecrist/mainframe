@@ -34,8 +34,11 @@ jobs:
           
       - name: Update Tailscale Tags
         run: | 
-          echo $(tailscale ip -4 jarvis)
+          sudo apt-get update
+          sudo apt-get install tailscale -y
           sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)"
+          echo $(tailscale ip -4 jarvis)
+          
           
       
       - name: Add SSH key
