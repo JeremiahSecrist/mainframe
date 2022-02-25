@@ -34,8 +34,8 @@ jobs:
           
       - name: Update Tailscale Tags
         run: | 
-        sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)"
-        MACHINE_IP=$(tailscale ip -4 jarvis)
+          sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)"
+          MACHINE_IP=$(tailscale ip -4 jarvis)
       
       - name: Add SSH key
         id: ssh
