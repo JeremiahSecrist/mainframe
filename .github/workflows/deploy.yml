@@ -12,6 +12,8 @@ jobs:
       # This is used to complete the identity challenge
       # with sigstore/fulcio when running outside of PRs.
       id-token: write
+      env:
+        MACHINE: ${{HOST}}
 
     
     steps:
@@ -35,24 +37,21 @@ jobs:
       - name: Update Tailscale Tags
         run: sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)" && ls
       
-      # - name: executing remote ssh commands using password
-      #   uses: appleboy/ssh-action@master
-      #   with:
-      #     host: ${{ secrets.HOST }}
-      #     username: ${{ secrets.USERNAME }}
-      #     # fingerprint: ${{ secrets.fingerprint }}
-      #     password: ${{ secrets.PASS}}          
-      #     # key: ${{ secrets.SSH_KEY }}
-      #     port: ${{ secrets.PORT }}
-      #     script: whoami
-
-      - name: Deploy to Staging server
-        uses: easingthemes/ssh-deploy@main
+      - name: Add SSH key
+        id: ssh
         env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_KEY }}
-          ARGS: "-rltgoDzvO"
-          SOURCE: "dist/"
-          REMOTE_HOST: ${{ secrets.HOST }}
-          REMOTE_USER: ${{ secrets.USERNAME }}
-          # TARGET: ${{ secrets.REMOTE_TARGET }}
-          EXCLUDE: "/dist/, /node_modules/"
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          MACHINE_IP="$(tailscale ip -6 $MACHINE)"
+          ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
+          printf "%s" "$SSH_KEY" > ~/.ssh/key
+          chmod 600 ~/.ssh/key
+
+      - name: test ssh connections
+        id: deploy
+        run: |
+          MACHINE_IP="$(tailscale ip -6 $MACHINE)"
+          ssh -i ~/.ssh/key "${{USERNAME}}@$MACHINE_IP" whoami
+
+
