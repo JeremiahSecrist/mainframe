@@ -18,8 +18,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install libnotify
-        run: sudo apt-get install libnotify-bin
+      # - name: Install libnotify
+      #   run: sudo apt-get install libnotify-bin
 
       - name: Setup Tailscale
         # or use main branch to go on the bleeding edge
