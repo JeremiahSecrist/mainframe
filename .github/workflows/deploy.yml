@@ -43,7 +43,7 @@ jobs:
           version: "1.21.120"
           
       - name: check connection
-        run: echo $(tailscale ip -4 jarvis) && echo $(tailscale ip -6 jarvis)
+        run: $(tailscale ip -4 ${{ secrets.HOST }})) && echo $(tailscale ip -6 ${{ secrets.HOST }}))
           
           
       
@@ -53,7 +53,7 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          MACHINE_IP=$(tailscale ip -4 jarvis)
+          MACHINE_IP=$(tailscale ip -6 ${{ secrets.HOST }})
           ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
           printf "%s" "$SSH_KEY" > ~/.ssh/key
           chmod 600 ~/.ssh/key
@@ -61,7 +61,7 @@ jobs:
       - name: test ssh connections
         id: deploy
         run: |
-          MACHINE_IP=$(tailscale ip -4 jarvis)
+          MACHINE_IP=$(tailscale ip -6)
           ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
 
 
