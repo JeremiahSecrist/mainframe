@@ -21,39 +21,45 @@ jobs:
       # - name: Install libnotify
       #   run: sudo apt-get install libnotify-bin
 
-      - name: Setup Tailscale
+      # - name: Setup Tailscale
+      #   # or use main branch to go on the bleeding edge
+      #   uses: tailscale/github-action@v1
+      #   with:
+      #     # secret name may varies on your org
+      #     authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
+      #     # # the defaults tag goes here, plus some addons.
+      #     # labels: tag:gh-actions
+      #     # # Going to unstable is risky, beware!
+          # version: "1.22.0"
+      - name: Setup Wireguard VPN through Tailscale
         # or use main branch to go on the bleeding edge
-        uses: tailscale/github-action@v1
+        uses: MadeByThePinsHub/tailscale-action-labels@v0.1
         with:
           # secret name may varies on your org
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          # # the defaults tag goes here, plus some addons.
-          # labels: tag:gh-actions
-          # # Going to unstable is risky, beware!
-          # version: "1.22.0"
+          # the defaults tag goes here, plus some addons.
+          labels: tag:gh-actions
+          # Going to unstable is risky, beware!
+          version: "1.21.120"
           
-      - name: Update Tailscale Tags
-        run: | 
-          sudo apt update
-          sudo apt install tailscale -y
-          sudo tailscale up --advertise-tags=${{ secrets.TAG }} --accept-routes --hostname="github-$(cat /etc/hostname)"
-          echo $(tailscale ip -4 jarvis)
+      - name: check connection
+        run: echo $(tailscale ip -4 jarvis)
           
           
       
-      - name: Add SSH key
-        id: ssh
-        env:
-          SSH_KEY: ${{ secrets.SSH_KEY }}
-        run: |
-          mkdir -p ~/.ssh
-          ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
-          printf "%s" "$SSH_KEY" > ~/.ssh/key
-          chmod 600 ~/.ssh/key
+      # - name: Add SSH key
+      #   id: ssh
+      #   env:
+      #     SSH_KEY: ${{ secrets.SSH_KEY }}
+      #   run: |
+      #     mkdir -p ~/.ssh
+      #     ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
+      #     printf "%s" "$SSH_KEY" > ~/.ssh/key
+      #     chmod 600 ~/.ssh/key
 
-      - name: test ssh connections
-        id: deploy
-        run: |
-          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
+      # - name: test ssh connections
+      #   id: deploy
+      #   run: |
+      #     ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
 
 
