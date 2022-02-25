@@ -41,7 +41,7 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
         run: |
           mkdir -p ~/.ssh
-          MACHINE_IP="$(tailscale ip -6 ${{ secrets.HOST }})"
+          MACHINE_IP="$(tailscale ip -4 ${{ secrets.HOST }})"
           ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
           printf "%s" "$SSH_KEY" > ~/.ssh/key
           chmod 600 ~/.ssh/key
@@ -49,6 +49,6 @@ jobs:
       - name: test ssh connections
         id: deploy
         run: |
-          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$(tailscale ip -6 ${{ secrets.HOST }})" "touch test && exit"
+          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$(tailscale ip -4 ${{ secrets.HOST }})" "touch test && exit"
 
 
