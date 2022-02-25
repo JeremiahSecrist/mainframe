@@ -61,6 +61,7 @@ jobs:
       - name: test ssh connections
         id: deploy
         run: |
+          MACHINE_IP=$(tailscale ip -4 jarvis)
           ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
 
 
