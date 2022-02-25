@@ -31,6 +31,8 @@ jobs:
           # labels: tag:gh-actions
           # # Going to unstable is risky, beware!
           # version: "1.22.0"
+      - name: Update Tailscale Tags
+         run: sudo tailscale up --advertise-tags=${{ secrets.TAG }}
       
       - name: executing remote ssh commands using password
         uses: appleboy/ssh-action@master
