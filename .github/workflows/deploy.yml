@@ -10,7 +10,7 @@ jobs:
     steps:
        name: Setup Tailscale
       # or use main branch to go on the bleeding edge
-      uses: MadeByThePinsHub/tailscale-action-labels@v0.1
+        uses: MadeByThePinsHub/tailscale-action-labels@v0.1
         with:
           # secret name may varies on your org
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
