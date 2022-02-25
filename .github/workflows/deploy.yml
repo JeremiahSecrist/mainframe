@@ -33,7 +33,7 @@ jobs:
           # version: "1.22.0"
       - name: Setup Wireguard VPN through Tailscale
         # or use main branch to go on the bleeding edge
-        uses: MadeByThePinsHub/tailscale-action-labels@v1
+        uses: MadeByThePinsHub/tailscale-action-labels@v0.1.0
         with:
           # secret name may varies on your org
           authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
