@@ -1,0 +1,9 @@
+[master]
+1.example.com
+
+[nodes]
+2.exmaple.com
+3.exmaple.com
+
+[vars]
+ansible_ssh_user=auto
