@@ -19,16 +19,6 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Setup Wireguard VPN through Tailscale
-        # or use main branch to go on the bleeding edge
-        uses: MadeByThePinsHub/tailscale-action-labels@v0.1.0
-        with:
-          # secret name may varies on your org
-          authkey: ${{ secrets.TAILSCALE_AUTHKEY }}
-          # the defaults tag goes here, plus some addons.
-          labels: ${{ secrets.TAG }}
-          # Going to unstable is risky, beware!
-          version: "1.21.120"
-      - name: Setup Wireguard VPN through Tailscale
         env:
           AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
           TAGS: ${{ secrets.TAG}}
@@ -42,7 +32,7 @@ jobs:
             sleep 0.5
           done
           echo "Successfully connected to tailnet!"
-          
+
       - name: check connection
         id: connect
         env:
