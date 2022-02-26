@@ -33,6 +33,14 @@ jobs:
           done
           echo "Successfully connected to tailnet!"
 
+      - name: install ansible
+        id: ansible
+        run: | 
+          sudo apt-get install software-properties-common
+          sudo apt-add-repository ppa:ansible/ansible
+          sudo apt-get update
+          sudo apt-get install ansible
+
       - name: check connection
         id: connect
         env:
@@ -57,7 +65,9 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USERNAME }}
         run: |
-          MACHINE_IP=$(tailscale ip -4 $HOST )
-          ssh -i ~/.ssh/key "${USER}@${MACHINE_IP}" "touch test && exit"
+          ansible all -m ping -u ubuntu
+          
+          # MACHINE_IP=$(tailscale ip -4 $HOST )
+          # ssh -i ~/.ssh/key "${USER}@${MACHINE_IP}" "touch test && exit"
 
 
