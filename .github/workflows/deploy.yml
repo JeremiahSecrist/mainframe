@@ -54,7 +54,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
         run: |
           KEY_PATH=./key
-          mkdir -p $KEY_PATH
+          mkdir -p ~/.ssh
           MACHINE_IP=$(tailscale ip -4 $HOST)
           ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
           printf "%s" "$SSH_KEY" > $KEY_PATH
