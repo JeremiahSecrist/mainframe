@@ -1,28 +1,35 @@
 ---
 - hosts: desktop
   become: true
+  tasks:
+  - name: Add the flathub flatpak repository remote to the user installation
+    community.general.flatpak_remote:
+      name: flathub
+      state: present
+      flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
+      method: user
 
-- name: Install Flatpaks 
-  community.general.flatpak:
-    name: '{{item}}'
-    state: present
-    method: user
-  loop:
-    # Base
-    - com.mattjakeman.ExtensionManager
-    - org.gnome.seahorse.Application
-    # Gaming
-    - com.valvesoftware.Steam
-    - net.davidotek.pupgui2
-    - net.lutris.Lutris
-    - org.mozilla.firefox
-    # Office
-    - com.wps.Office
-    - org.gnome.Meld
-    - org.prusa.PrusaSlicer
-    - org.gnome.DejaDup
-    - org.gnome.World.PikaBackup
-    # Comunications
-    - org.signal.Signal
-    - com.discordapp.Discord
+  - name: Install Flatpaks 
+    community.general.flatpak:
+      name: '{{item}}'
+      state: present
+      method: user
+    loop:
+      # Base
+      - com.mattjakeman.ExtensionManager
+      - org.gnome.seahorse.Application
+      # Gaming
+      - com.valvesoftware.Steam
+      - net.davidotek.pupgui2
+      - net.lutris.Lutris
+      - org.mozilla.firefox
+      # Office
+      - com.wps.Office
+      - org.gnome.Meld
+      - org.prusa.PrusaSlicer
+      - org.gnome.DejaDup
+      - org.gnome.World.PikaBackup
+      # Comunications
+      - org.signal.Signal
+      - com.discordapp.Discord
     
