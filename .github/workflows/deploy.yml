@@ -25,7 +25,7 @@ jobs:
         run: |
           sudo curl -fsSL https://tailscale.com/install.sh | sh
           sudo tailscaled 2>~/tailscaled.log &
-          HOSTNAME="gh-$(cat /etc/hostname)"
+          HOSTNAME="gh-actions"
           until sudo tailscale up --authkey ${AUTHKEY} --hostname ${HOSTNAME} --advertise-tags ${TAG} --accept-routes
           do
             echo "warning: Tailnet Wireguard tunnel still not ready, please standby..."
