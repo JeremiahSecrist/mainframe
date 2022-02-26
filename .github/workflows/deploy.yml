@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-     - name: Setup Wireguard VPN through Tailscale
+      - name: Setup Wireguard VPN through Tailscale
         env:
           AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
           TAG: ${{ secrets.TAG }}
