@@ -27,8 +27,22 @@ jobs:
           # the defaults tag goes here, plus some addons.
           labels: ${{ secrets.TAG }}
           # Going to unstable is risky, beware!
-          version: "1.21.1"
-      
+          version: "1.21.120"
+      - name: Setup Wireguard VPN through Tailscale
+        env:
+          AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
+          TAGS: ${{ secrets.TAG}}
+        run: |
+          sudo curl -fsSL https://tailscale.com/install.sh | sh
+          sudo tailscaled 2>~/tailscaled.log &
+          HOSTNAME="gh-$(cat /etc/hostname)"
+          until sudo tailscale up --authkey ${AUTHKEY} --hostname ${HOSTNAME} --advertise-tags ${TAG} --accept-routes
+          do
+            echo "warning: Tailnet Wireguard tunnel still not ready, please standby..."
+            sleep 0.5
+          done
+          echo "Successfully connected to tailnet!"
+          
       - name: check connection
         id: connect
         env:
@@ -51,9 +65,9 @@ jobs:
         id: deploy
         env:
           HOST: ${{ secrets.HOST }}
-          USER: ${{ secrets.USERNAME }}
+          USER: 
         run: |
           MACHINE_IP=$(tailscale ip -4 $HOST )
-          ssh -i ~/.ssh/key "$USER@$MACHINE_IP" "touch test && exit"
+          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
 
 
