@@ -1,5 +1,6 @@
 ---
 - hosts: yum
+  become: true
   tasks:
   - name: Update all installed packages using YUM module
     yum:
@@ -18,6 +19,7 @@
     when: yum_update_status.changed
 
 - hosts: apt
+  become: true
   tasks:
   - name: Update all installed packages using APT module
     apt:
