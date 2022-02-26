@@ -30,23 +30,30 @@ jobs:
           version: "1.21.120"
       
       - name: check connection
-        run: tailscale ip -4 ${{ secrets.HOST }} > /dev/null && tailscale ip -6 ${{ secrets.HOST }} > /dev/null
+        id: connect
+        env:
+          HOST: ${{ secrets.HOST }}
+        run: tailscale ip -4 $HOST > /dev/null && tailscale ip -6  $HOST > /dev/null
           
       - name: Add SSH key
         id: ssh
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
+          HOST: ${{ secrets.HOST }}
         run: |
           mkdir -p ~/.ssh
-          MACHINE_IP=$(tailscale ip -4 ${{ secrets.HOST }})
+          MACHINE_IP=$(tailscale ip -4 $HOST
           ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
           printf "%s" "$SSH_KEY" > ~/.ssh/key
           chmod 600 ~/.ssh/key
 
       - name: Deploy code to server
         id: deploy
+        env:
+          HOST: ${{ secrets.HOST }}
+          USER: ${{ secrets.USERNAME }}
         run: |
-          MACHINE_IP=$(tailscale ip -4)
-          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
+          MACHINE_IP=$(tailscale ip -4 $HOST )
+          ssh -i ~/.ssh/key "$USER@$MACHINE_IP" "touch test && exit"
 
 
