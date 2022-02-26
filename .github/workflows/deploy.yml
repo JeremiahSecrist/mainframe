@@ -53,11 +53,12 @@ jobs:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           HOST: ${{ secrets.HOST }}
         run: |
-          mkdir -p ~/.ssh
+          KEY_PATH=./key
+          mkdir -p $KEY_PATH
           MACHINE_IP=$(tailscale ip -4 $HOST)
           ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
-          printf "%s" "$SSH_KEY" > ~/.ssh/key
-          chmod 600 ~/.ssh/key
+          printf "%s" "$SSH_KEY" > $KEY_PATH
+          chmod 600 $KEY_PATH
 
       - name: Deploy code to server
         id: deploy
@@ -70,6 +71,6 @@ jobs:
           ansible all -m ping
           
           # MACHINE_IP=$(tailscale ip -4 $HOST )
-          # ssh -i ~/.ssh/key "${USER}@${MACHINE_IP}" "touch test && exit"
+          # ssh -i $KEY_PATH "${USER}@${MACHINE_IP}" "touch test && exit"
 
 
