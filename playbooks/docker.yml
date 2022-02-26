@@ -1,0 +1,32 @@
+---
+- hosts: yum
+  become: true
+  tasks:
+  - name: remove outdated docker packages
+    yum:
+      name:
+        - docker 
+        - docker-client 
+        - docker-client-latest 
+        - docker-common 
+        - docker-latest 
+        - docker-latest-logrotate 
+        - docker-logrotate 
+        - docker-selinux 
+        - docker-engine-selinux 
+        - docker-engine
+      state: absent
+
+  - name: add docker repo
+    yum_repository:
+      name: Docker
+      description: Docker Repo
+      baseurl: https://download.docker.com/linux/fedora/docker-ce.repo
+  
+  - name: remove outdated docker packages
+    yum:
+      name:
+        - docker-ce 
+        - docker-ce-cli 
+        - containerd.io
+      state: latest
