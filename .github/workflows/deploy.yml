@@ -65,7 +65,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
           USER: ${{ secrets.USERNAME }}
         run: |
-          ansible all -m ping -u ubuntu
+          ansible all -m ping
           
           # MACHINE_IP=$(tailscale ip -4 $HOST )
           # ssh -i ~/.ssh/key "${USER}@${MACHINE_IP}" "touch test && exit"
