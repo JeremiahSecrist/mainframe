@@ -46,7 +46,7 @@ jobs:
           HOST: ${{ secrets.HOST }}
         run: |
           mkdir -p ~/.ssh
-          MACHINE_IP=$(tailscale ip -4 $HOST
+          MACHINE_IP=$(tailscale ip -4 $HOST)
           ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
           printf "%s" "$SSH_KEY" > ~/.ssh/key
           chmod 600 ~/.ssh/key
