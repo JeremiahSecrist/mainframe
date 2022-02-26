@@ -27,7 +27,7 @@ jobs:
           # the defaults tag goes here, plus some addons.
           labels: ${{ secrets.TAG }}
           # Going to unstable is risky, beware!
-          version: "1.21.120"
+          version: "1.21.1"
       
       - name: check connection
         id: connect
