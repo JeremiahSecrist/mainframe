@@ -18,10 +18,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Setup Wireguard VPN through Tailscale
+     - name: Setup Wireguard VPN through Tailscale
         env:
           AUTHKEY: ${{ secrets.TAILSCALE_AUTHKEY }}
-          TAGS: ${{ secrets.TAG}}
+          TAG: ${{ secrets.TAG }}
         run: |
           sudo curl -fsSL https://tailscale.com/install.sh | sh
           sudo tailscaled 2>~/tailscaled.log &
