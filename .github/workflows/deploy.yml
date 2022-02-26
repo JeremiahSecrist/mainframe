@@ -55,9 +55,9 @@ jobs:
         id: deploy
         env:
           HOST: ${{ secrets.HOST }}
-          USER: 
+          USER: ${{ secrets.USERNAME }}
         run: |
           MACHINE_IP=$(tailscale ip -4 $HOST )
-          ssh -i ~/.ssh/key "${{ secrets.USERNAME }}@$MACHINE_IP" "touch test && exit"
+          ssh -i ~/.ssh/key "${USER}@${MACHINE_IP}" "touch test && exit"
 
 
