@@ -66,6 +66,7 @@ jobs:
           USER: ${{ secrets.USERNAME }}
         run: |
           pwd
+          ls
           ansible all -m ping
           
           # MACHINE_IP=$(tailscale ip -4 $HOST )
