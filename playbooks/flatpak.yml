@@ -2,34 +2,48 @@
 - hosts: desktop
   become: true
   tasks:
-  - name: Add the flathub flatpak repository remote to the user installation
+  - name: Add the flathub flatpak repository.
     community.general.flatpak_remote:
       name: flathub
       state: present
-      flatpakrepo_url: https://dl.flathub.org/repo/flathub.flatpakrepo
-      method: user
+      flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+      method: system
+
+  - name: Add the flathub-beta flatpak repository.
+    community.general.flatpak_remote:
+      name: flathub-beta
+      state: present
+      flatpakrepo_url: https://flathub.org/beta-repo/flathub-beta.flatpakrepo
+      method: system
 
   - name: Install Flatpaks 
     community.general.flatpak:
-      name: '{{item}}'
-      state: present
-      method: user
-    loop:
-      # Base
+      name: 
       - com.mattjakeman.ExtensionManager
       - org.gnome.seahorse.Application
-      # Gaming
       - com.valvesoftware.Steam
       - net.davidotek.pupgui2
-      - net.lutris.Lutris
       - org.mozilla.firefox
-      # Office
       - com.wps.Office
       - org.gnome.Meld
-      - org.prusa.PrusaSlicer
+      - com.prusa3d.PrusaSlicer
       - org.gnome.DejaDup
       - org.gnome.World.PikaBackup
-      # Comunications
       - org.signal.Signal
       - com.discordapp.Discord
+      # lutris
+      - org.gnome.Platform.Compat.i386/x86_64/41
+      - org.freedesktop.Platform.GL32.default/x86_64/21.08
+      - org.freedesktop.Platform.GL.default/x86_64/21.08
+      state: present
+      method: system
+
+  - name: Install Flatpak-betas 
+    community.general.flatpak:
+      remote: flathub-beta
+      name: 
+        # lutris
+        - net.lutris.Lutris
+      state: present
+      method: system
     
