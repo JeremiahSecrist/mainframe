@@ -9,10 +9,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-      # This is used to complete the identity challenge
-      # with sigstore/fulcio when running outside of PRs.
-      id-token: write
-
     
     steps:
       - name: Checkout repository
@@ -45,32 +41,25 @@ jobs:
         id: connect
         env:
           HOST: ${{ secrets.HOST }}
-        run: tailscale ip -4 $HOST > /dev/null && tailscale ip -6  $HOST > /dev/null
+        run: 
+          tailscale ip -4 $HOST > /dev/null
+          tailscale ip -6 $HOST > /dev/null
           
       - name: Add SSH key
         id: ssh
         env:
           SSH_KEY: ${{ secrets.SSH_KEY }}
           HOST: ${{ secrets.HOST }}
+          KEY_PATH: ./key
         run: |
-          KEY_PATH=./key
-          mkdir -p ~/.ssh
-          MACHINE_IP=$(tailscale ip -4 $HOST)
-          ssh-keyscan $MACHINE_IP >> ~/.ssh/known_hosts
           printf "%s" "$SSH_KEY" > $KEY_PATH
           chmod 600 $KEY_PATH
 
-      - name: Deploy code to server
+      - name: Deploy Ansible
         id: deploy
         env:
           HOST: ${{ secrets.HOST }}
-          USER: ${{ secrets.USERNAME }}
         run: |
-          pwd
-          ls
           ansible all -m ping
-          
-          # MACHINE_IP=$(tailscale ip -4 $HOST )
-          # ssh -i $KEY_PATH "${USER}@${MACHINE_IP}" "touch test && exit"
 
 
