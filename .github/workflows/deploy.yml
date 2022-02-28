@@ -55,7 +55,7 @@ jobs:
           printf "%s" "$SSH_KEY" > $KEY_PATH
           chmod 600 $KEY_PATH
 
-      - name: Deploy code to server
+      - name: Deploy Ansible
         id: deploy
         env:
           HOST: ${{ secrets.HOST }}
